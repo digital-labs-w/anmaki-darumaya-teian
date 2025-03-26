@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>デジタル催事パスポート QRコード</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "Meiryo", "メイリオ", "Osaka", "MS PGothic", Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 210mm;
+            height: 297mm;
+            background: white;
+        }
+        .page {
+            width: 210mm;
+            height: 297mm;
+            box-sizing: border-box;
+            padding: 20mm;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, #e74c3c, #9b59b6);
+            color: white;
+            padding: 15mm;
+            border-radius: 5mm;
+            width: 160mm;
+            margin-bottom: 20mm;
+        }
+        .title {
+            font-size: 24pt;
+            font-weight: bold;
+            margin-bottom: 5mm;
+        }
+        .subtitle {
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .qr-container {
+            width: 120mm;
+            height: 120mm;
+            margin: 0 auto 15mm auto;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5mm;
+            background-color: #f9f9f9;
+        }
+        .qr-instruction {
+            text-align: center;
+            font-size: 14pt;
+            line-height: 1.6;
+            max-width: 160mm;
+            margin: 0 auto;
+        }
+        .footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 11pt;
+            color: #555;
+        }
+        @media print {
+            body, .page {
+                margin: 0;
+                padding: 0;
+                width: 210mm;
+                height: 297mm;
+            }
+            .page {
+                padding: 20mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="title">デジタル催事パスポート</div>
+            <div class="subtitle">あんまきのだるまや様 専用システム</div>
+        </div>
+        
+        <div class="qr-container">
+            <!-- QRコードがここに入ります -->
+        </div>
+        
+        <div class="qr-instruction">
+            <p>QRコードをスキャンして、デジタル催事パスポートの詳細をご覧ください。</p>
+            <p>スマートフォンのカメラでスキャンするだけで、催事スケジュールやデジタルスタンプカードの詳細情報がご確認いただけます。</p>
+        </div>
+        
+        <div class="footer">
+            digitalstreetlabstokyo@gmail.com | digital-labs-w.github.io/digital-street-lab
+        </div>
+    </div>
+</body>
+</html>
