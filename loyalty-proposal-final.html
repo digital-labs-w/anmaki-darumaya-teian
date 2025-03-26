@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>デジタル催事パスポート提案</title>
+    <style>
+        body {
+            font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "Meiryo", "メイリオ", "Osaka", "MS PGothic", Arial, Helvetica, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box;
+        }
+        
+        @media print {
+            .page {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15mm;
+            background: linear-gradient(135deg, #e74c3c, #9b59b6);
+            color: white;
+            padding: 15mm 5mm;
+            border-radius: 5mm;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .qr-code {
+            position: absolute;
+            top: 10mm;
+            right: 10mm;
+            width: 15mm;
+            height: 15mm;
+            background-color: white;
+            border-radius: 2mm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8pt;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .title {
+            font-size: 28pt;
+            font-weight: bold;
+            margin-bottom: 5mm;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 18pt;
+            font-weight: bold;
+        }
+        
+        .section {
+            margin-bottom: 10mm;
+        }
+        
+        .section-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 5mm;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 2mm;
+        }
+        
+        .content {
+            font-size: 12pt;
+        }
+        
+        .feature-box {
+            background-color: #f9f9f9;
+            border-radius: 5mm;
+            padding: 5mm;
+            margin-bottom: 8mm;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .feature-title {
+            font-weight: bold;
+            margin-bottom: 3mm;
+            font-size: 14pt;
+            color: #e74c3c;
+        }
+        
+        .feature-list {
+            margin: 0;
+            padding-left: 5mm;
+        }
+        
+        .feature-list li {
+            margin-bottom: 2mm;
+        }
+        
+        .mockup {
+            text-align: center;
+            margin: 8mm 0;
+        }
+        
+        .mockup-container {
+            display: inline-block;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 10px;
+            margin: 0 auto;
+        }
+        
+        .phone-mockup {
+            background-color: #333;
+            border-radius: 20px;
+            padding: 10px 5px;
+            box-shadow: 0 0 0 2px #999;
+            display: inline-block;
+        }
+        
+        .screen {
+            width: 280px;
+            height: 500px;
+            background: linear-gradient(135deg, #3498db, #2ecc71);
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .app-header {
+            background-color: rgba(255,255,255,0.9);
+            height: 50px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .app-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .app-content {
+            padding: 15px;
+        }
+        
+        .stamp-area {
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .stamp-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .stamps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .stamp {
+            width: 45px;
+            height: 45px;
+            background-color: white;
+            border-radius: 50%;
+            margin: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #e74c3c;
+            border: 2px dashed #e74c3c;
+        }
+        
+        .stamp-filled {
+            background-color: #e74c3c;
+            color: white;
+            border: 2px solid #e74c3c;
+        }
+        
+        .map-area {
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            padding: 10px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .map-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #eef1f5;
+            overflow: hidden;
+        }
+        
+        /* Simple map styling with roads and blocks */
+        .map-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .map-road-h {
+            position: absolute;
+            height: 8px;
+            background-color: #ddd;
+        }
+        
+        .map-road-v {
+            position: absolute;
+            width: 8px;
+            background-color: #ddd;
+        }
+        
+        .map-block {
+            position: absolute;
+            background-color: #e8e8e8;
+            border: 1px solid #ddd;
+        }
+        
+        .map-pin {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .achievements {
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            padding: 10px;
+        }
+        
+        .achievement-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .achievement-badges {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .badge {
+            width: 60px;
+            height: 60px;
+            background-color: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ddd;
+        }
+        
+        .badge-unlocked {
+            border-color: #f1c40f;
+            background-color: #fef9e7;
+        }
+        
+        .pricing {
+            background: linear-gradient(135deg, #e74c3c, #9b59b6);
+            border-radius: 5mm;
+            padding: 8mm;
+            margin-top: 10mm;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 15mm; /* Added more space here */
+        }
+        
+        .pricing-title {
+            font-size: 18pt;
+            font-weight: bold;
+            margin-bottom: 5mm;
+        }
+        
+        .price-item {
+            font-size: 14pt;
+            margin-bottom: 3mm;
+        }
+        
+        .price-highlight {
+            font-weight: bold;
+            font-size: 20pt;
+            display: inline-block;
+            margin: 2mm 0;
+        }
+        
+        .price-original {
+            text-decoration: line-through;
+            opacity: 0.7;
+            font-size: 12pt;
+        }
+        
+        .footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            text-align: center;
+            font-size: 11pt;
+            color: #555;
+            padding-top: 5mm;
+            border-top: 1px solid #eee;
+        }
+        
+        .highlight-box {
+            background-color: #fef5f4;
+            border-left: 5px solid #e74c3c;
+            padding: 5mm;
+            margin-top: 5mm;
+            border-radius: 2mm;
+        }
+        
+        .highlight-title {
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 2mm;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="qr-code">QRコード</div>
+            <div class="title">デジタル催事パスポート</div>
+            <div class="subtitle">あんまきのだるまや様 専用システム</div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">提案の目的</div>
+            <div class="content">
+                あんまきのだるまや様の「ジャパンフードセレクション金賞」受賞商品の素晴らしさと、東京各地での催事展開の魅力をさらに高めるデジタルソリューションをご提案いたします。
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">主な目的</div>
+                    <ul>
+                        <li>お客様が催事を見つけやすくする</li>
+                        <li>紙のスタンプカードをデジタル化して利便性向上</li>
+                        <li>催事訪問を楽しいゲーム体験に変える</li>
+                        <li>リピーター獲得と顧客ロイヤリティの強化</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="mockup">
+            <div class="mockup-container">
+                <div class="phone-mockup">
+                    <div class="screen">
+                        <div class="app-header">
+                            <div class="app-title">あんまきのだるまや デジタルパスポート</div>
+                        </div>
+                        <div class="app-content">
+                            <div class="stamp-area">
+                                <div class="stamp-title">デジタルスタンプカード</div>
+                                <div class="stamps">
+                                    <div class="stamp stamp-filled">1</div>
+                                    <div class="stamp stamp-filled">2</div>
+                                    <div class="stamp stamp-filled">3</div>
+                                    <div class="stamp">4</div>
+                                    <div class="stamp">5</div>
+                                    <div class="stamp">6</div>
+                                    <div class="stamp">7</div>
+                                    <div class="stamp">8</div>
+                                    <div class="stamp">9</div>
+                                    <div class="stamp">10</div>
+                                </div>
+                            </div>
+                            
+                            <div class="map-area">
+                                <div class="map-placeholder">
+                                    <div class="map-grid">
+                                        <!-- Horizontal roads -->
+                                        <div class="map-road-h" style="top: 30px; left: 0; width: 100%;"></div>
+                                        <div class="map-road-h" style="top: 80px; left: 0; width: 100%;"></div>
+                                        <div class="map-road-h" style="top: 130px; left: 0; width: 100%;"></div>
+                                        
+                                        <!-- Vertical roads -->
+                                        <div class="map-road-v" style="top: 0; left: 50px; height: 100%;"></div>
+                                        <div class="map-road-v" style="top: 0; left: 120px; height: 100%;"></div>
+                                        <div class="map-road-v" style="top: 0; left: 190px; height: 100%;"></div>
+                                        
+                                        <!-- Map blocks (buildings) -->
+                                        <div class="map-block" style="top: 5px; left: 15px; width: 30px; height: 20px;"></div>
+                                        <div class="map-block" style="top: 40px; left: 65px; width: 45px; height: 35px;"></div>
+                                        <div class="map-block" style="top: 40px; left: 130px; width: 55px; height: 35px;"></div>
+                                        <div class="map-block" style="top: 85px; left: 15px; width: 30px; height: 40px;"></div>
+                                        <div class="map-block" style="top: 90px; left: 130px; width: 30px; height: 35px;"></div>
+                                        <div class="map-block" style="top: 90px; left: 200px; width: 40px; height: 35px;"></div>
+                                    </div>
+                                </div>
+                                <div class="map-pin" style="top: 30%; left: 40%;"></div>
+                                <div class="map-pin" style="top: 60%; left: 70%;"></div>
+                                <div class="map-pin" style="top: 50%; left: 20%;"></div>
+                            </div>
+                            
+                            <div class="achievements">
+                                <div class="achievement-title">獲得バッジ</div>
+                                <div class="achievement-badges">
+                                    <div class="badge badge-unlocked">★</div>
+                                    <div class="badge">★</div>
+                                    <div class="badge">★</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">システム機能</div>
+            <div class="content">
+                <div class="feature-box">
+                    <div class="feature-title">お客様向け機能</div>
+                    <ul class="feature-list">
+                        <li>モバイルフレンドリーなデジタルスタンプカード（紛失の心配なし）</li>
+                        <li>すべての催事出店情報を地図上で表示</li>
+                        <li>来店時にQRコードをスキャンしてスタンプを収集</li>
+                        <li>複数の催事訪問でバッジ獲得・特典解放</li>
+                        <li>目的の催事が近くにある時に通知（オプション）</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-box">
+                    <div class="feature-title">店舗様向けメリット</div>
+                    <ul class="feature-list">
+                        <li>店舗様の既存ウェブサイトと連携し、変更不要</li>
+                        <li>お客様の訪問データを分析できる管理画面</li>
+                        <li>リピーター獲得と顧客ロイヤリティの向上</li>
+                        <li>QRコードの設置のみで簡単運用</li>
+                        <li>特典内容を自由に設定可能</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="pricing">
+            <div class="pricing-title">限定特別オファー</div>
+            <div class="price-item">初期セットアップ費用</div>
+            <div class="price-highlight">無料</div>
+            <div class="price-original">通常 ¥45,000</div>
+            <br>
+            <div class="price-item">月額費用</div>
+            <div class="price-highlight">¥2,900/月</div>
+            <div class="price-item">※追加料金や隠れた費用は一切ありません</div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">導入スケジュール</div>
+            <div class="content">
+                <ul>
+                    <li>お申し込み後、1週間以内にシステム構築</li>
+                    <li>催事出店情報の連携設定</li>
+                    <li>管理画面の使い方レクチャー（約30分）</li>
+                    <li>QRコードの設置サポート</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            デジタルストリートラボ | メール: contact@digitalstreetlab.com | 電話: 080-XXXX-XXXX
+        </div>
+    </div>
+</body>
+</html>
